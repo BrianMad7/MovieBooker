@@ -6,7 +6,7 @@ function generateToken(user) {
 function verifyToken(token) {
     const decode = atob(token);
     // https://www.w3schools.com/jsref/met_win_atob.asp
-    return decode;
+    return JSON.parse(decode);
 }
 
 
