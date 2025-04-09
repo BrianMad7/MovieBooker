@@ -18,10 +18,27 @@ export class MoviesService {
     }
 
     async getMoviesOnAir(params : {
-        page?: number;}): Promise<AxiosResponse<any>> {
-            const {page = 1} = params;
-        // https://developer.themoviedb.org/reference/movie-now-playing-list
-        const url = `${this.baseUrl}/movie/now_playing?language=fr-FR&page=${page}`;
+        page?: number;
+        search?: string;
+        sort?: string;
+    }): Promise<AxiosResponse<any>> {
+
+        const {page = 1, search, sort} = params;
+        let url: string;
+
+        if (search) {
+            // https://developer.themoviedb.org/reference/search-movie
+            url = `${this.baseUrl}/search/movie?query=${encodeURIComponent(search)}&language=fr-FR`;
+        } else {
+            // https://developer.themoviedb.org/reference/movie-now-playing-list
+            url = `${this.baseUrl}/movie/now_playing?language=fr-FR&page=${page}`;
+        }
+
+        if (sort === 'popularity') {
+            url = `${this.baseUrl}/movie/popular?language=fr-FR`;
+        } else if (sort === 'top_rated') {
+            url = `${this.baseUrl}/movie/top_rated?language=fr-FR`;
+        }
         
         return await firstValueFrom(this.httpService.get(url, {
             headers: {
