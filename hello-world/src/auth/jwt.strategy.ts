@@ -12,7 +12,7 @@ import { jwtConstants } from './constants';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private authService: AuthService) {
+  constructor() {
     super({
 
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -22,9 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         secretOrKey: jwtConstants.secret,
       
       });
-      console.log('JWT_SECRET value:', process.env.JWT_SECRET);
-
-      }
+    }
       
       async validate(payload: any) {
       
