@@ -9,10 +9,10 @@ import { DataSource } from 'typeorm';
 import { User } from './user/user.entity';
 import { HttpModule } from '@nestjs/axios';
 import { MoviesModule } from './movies/movies.module';
-import { ReservationService } from './reservation/reservation.service';
-import { ReservationController } from './reservation/reservation.controller';
 import { ReservationModule } from './reservation/reservation.module';
 import { Reservation } from './reservation/reservation.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/constants';
 
 @Module({
   imports: [
@@ -22,6 +22,11 @@ import { Reservation } from './reservation/reservation.entity';
     HttpModule,
     MoviesModule,
     ReservationModule,
+    JwtModule.register({
+          global: true,
+          secret: jwtConstants.secret,
+          signOptions: { expiresIn: '25000s' },
+        }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,

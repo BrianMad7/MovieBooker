@@ -14,12 +14,6 @@ import { PassportModule } from '@nestjs/passport';
     PassportModule,
     TypeOrmModule.forFeature([User]),
     UserModule,
-    JwtModule.register({
-      global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '25000s' },
-    }),
-    
   ],
   providers: [
     AuthService,
