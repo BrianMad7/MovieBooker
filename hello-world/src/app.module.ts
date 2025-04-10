@@ -24,7 +24,7 @@ import { jwtConstants } from './auth/constants';
     ReservationModule,
     JwtModule.register({
           global: true,
-          secret: jwtConstants.secret,
+          secret: jwtConstants.secret ?? 'test',
           signOptions: { expiresIn: '25000s' },
         }),
     TypeOrmModule.forRoot({
