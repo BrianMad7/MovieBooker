@@ -22,17 +22,16 @@ export class ReservationService {
 
     async newReservation(newReservationDto: NewReservationDto, userId: number) {
 
-        
-        const movie = await firstValueFrom(this.htppService.get(
-            `https://api.themoviedb.org/3/movie/${newReservationDto.movieId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${this.apiKey}`
+        try {
+            const movie = await firstValueFrom(this.htppService.get(
+                `https://api.themoviedb.org/3/movie/${newReservationDto.movieId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.apiKey}`
+                    },
                 },
-            },
-        ))
-
-        if (!movie) {
+            ))
+        } catch (error){
             throw new BadRequestException('Movie not found');
         }
 
