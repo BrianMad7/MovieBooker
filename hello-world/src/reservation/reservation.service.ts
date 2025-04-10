@@ -48,7 +48,6 @@ export class ReservationService {
         const finalReservation = this.reservationRepository.create({
             reservationDate,
             movieId: newReservationDto.movieId,
-            user: { id: userId }
         });
 
         return await this.reservationRepository.save(finalReservation);

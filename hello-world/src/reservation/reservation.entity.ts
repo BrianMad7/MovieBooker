@@ -13,7 +13,7 @@ export class Reservation {
     reservationDate: Date;
 
     //https://docs.nestjs.com/techniques/database#relations
-    @ManyToOne(() => User, (user) => user.reservations)
+    @ManyToOne(() => User, (user) => user.reservations, { eager: false })
     @JoinColumn({ name: 'userId' })
-    user: User;
+    user: User;  
 }
