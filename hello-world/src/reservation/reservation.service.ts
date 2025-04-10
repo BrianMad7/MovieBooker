@@ -51,6 +51,9 @@ export class ReservationService {
         });
 
         return await this.reservationRepository.save(finalReservation);
+    }
 
+    async getReservations(userId: number) {
+        return await this.reservationRepository.findBy({user: {id: userId}})
     }
 }
