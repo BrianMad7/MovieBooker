@@ -39,7 +39,8 @@ export class ReservationController {
     @Delete('/:id')
     async deleteReservation(
         @Param() params: {id: number},
+        @Request() req: { user: {id : number}},
     )  {
-        return await this.reservationService.deleteReservation(params.id)
+        return await this.reservationService.deleteReservation(params.id, req.user.id)
     }
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NewReservationDto } from './new-reservation.dto';
@@ -58,11 +58,19 @@ export class ReservationService {
         return await this.reservationRepository.findBy({user: {id: userId}})
     }
 
-    async deleteReservation(reservationId: number) {
-        const findReservation = await this.reservationRepository.findOneBy({id: reservationId});
+    async deleteReservation(reservationId: number, userId: number) {
+        const findReservation = await this.reservationRepository.findOne({
+            where:
+            {id: reservationId},
+            relations: {user: true}
+        });
 
         if (!findReservation) {
             throw new BadRequestException('reservation not found');
+        }
+
+        if (findReservation.user.id !== userId) {
+            throw new UnauthorizedException('You are not allowed to delete this reservation')
         }
 
         return await this.reservationRepository.delete(reservationId);
