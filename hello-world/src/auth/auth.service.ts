@@ -44,8 +44,8 @@ export class AuthService {
   }
 
   async login(LoginDto: LoginDto): Promise<{ access_token: string }> {
-    const { username, password} = LoginDto;
-    const user: User | null = await this.userRepository.findOneBy({username});
+    const { email, password} = LoginDto;
+    const user: User | null = await this.userRepository.findOneBy({email});
     if (!user) {
       throw new BadRequestException('No user found');
     }
@@ -56,7 +56,7 @@ export class AuthService {
       throw new UnauthorizedException('Wrong password');
     }
 
-    const payload = { sub: user.id, username: user.username };
+    const payload = { id: user.id, email: user.email };
 
     return {
         access_token: await this.jwtService.signAsync(payload),

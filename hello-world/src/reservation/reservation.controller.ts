@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { NewReservationDto } from './new-reservation.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -17,9 +17,9 @@ export class ReservationController {
     @ApiCreatedResponse({ description: "Create a reservation"})
     async newReservation(
         @Body() newReservationDto: NewReservationDto,
-        @Request() req: { user: {sub : number}}
+        @Request() req: { user: {id : number}}
     ) {
-        return await this.reservationService.newReservation(newReservationDto, req.user.sub)
+        return await this.reservationService.newReservation(newReservationDto, req.user.id)
     }
 
     @UseGuards(JwtAuthGuard)
@@ -27,8 +27,19 @@ export class ReservationController {
     @ApiOperation({ summary: 'Get all reservations for connected User'})
     @Get('/')
     async getReservations(
-        @Request() req: { user: {sub : number}}
+        @Request() req: { user: {id : number}}
     )  {
-        return await this.reservationService.getReservations(req.user.sub)
+        return await this.reservationService.getReservations(req.user.id)
+    }
+
+
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Get all reservations for connected User'})
+    @Delete('/:id')
+    async deleteReservation(
+        @Param() param: {id: number},
+    )  {
+        return await this.reservationService.deleteReservation(param.id)
     }
 }
