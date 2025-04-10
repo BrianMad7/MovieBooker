@@ -31,6 +31,7 @@ import { Reservation } from './reservation/reservation.entity';
       database: process.env.DB_NAME,
       entities: [User, Reservation],
       synchronize: true,
+      ssl: true
     }),
 ],
   controllers: [AppController],
