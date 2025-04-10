@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from '
 import { ReservationService } from './reservation.service';
 import { NewReservationDto } from './new-reservation.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtSecretRequestType } from '@nestjs/jwt';
 
 @ApiTags('Reservation')
@@ -32,14 +32,14 @@ export class ReservationController {
         return await this.reservationService.getReservations(req.user.id)
     }
 
-
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Get all reservations for connected User'})
+    @ApiParam({name: 'id', type: Number, required: true, description: 'Reservation id'})
     @Delete('/:id')
     async deleteReservation(
-        @Param() param: {id: number},
+        @Param() params: {id: number},
     )  {
-        return await this.reservationService.deleteReservation(param.id)
+        return await this.reservationService.deleteReservation(params.id)
     }
 }

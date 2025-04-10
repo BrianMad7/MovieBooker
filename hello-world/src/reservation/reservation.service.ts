@@ -48,6 +48,7 @@ export class ReservationService {
         const finalReservation = this.reservationRepository.create({
             reservationDate,
             movieId: newReservationDto.movieId,
+            user: { id: userId }
         });
 
         return await this.reservationRepository.save(finalReservation);
@@ -58,9 +59,12 @@ export class ReservationService {
     }
 
     async deleteReservation(reservationId: number) {
-        if(!reservationId) {
+        const findReservation = await this.reservationRepository.findOneBy({id: reservationId});
+
+        if (!findReservation) {
             throw new BadRequestException('reservation not found');
         }
+
         return await this.reservationRepository.delete(reservationId);
     }
 }
