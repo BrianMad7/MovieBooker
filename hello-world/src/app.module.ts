@@ -9,6 +9,10 @@ import { DataSource } from 'typeorm';
 import { User } from './user/user.entity';
 import { HttpModule } from '@nestjs/axios';
 import { MoviesModule } from './movies/movies.module';
+import { ReservationService } from './reservation/reservation.service';
+import { ReservationController } from './reservation/reservation.controller';
+import { ReservationModule } from './reservation/reservation.module';
+import { Reservation } from './reservation/reservation.entity';
 
 @Module({
   imports: [
@@ -16,7 +20,8 @@ import { MoviesModule } from './movies/movies.module';
     AuthModule,
     UserModule,
     HttpModule,
-    MoviesModule,  
+    MoviesModule,
+    ReservationModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -24,7 +29,7 @@ import { MoviesModule } from './movies/movies.module';
       username: 'postgres',
       password: '123456',
       database: 'movieBooker',
-      entities: [User],
+      entities: [User, Reservation],
       synchronize: true,
     }),
 ],
